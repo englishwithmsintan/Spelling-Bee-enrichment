@@ -1,0 +1,8 @@
+{
+  "name": "Spelling Bee Enrichment Session",
+  "description": "Interactive learning application for the 90-minute Advanced Level Spelling Bee Enrichment Session (Grade 3-6) featuring PPT slides, Tricky Patterns, Word Study, Listening Stations, Mock Spelling Bee, and Pre/Post Progress Checks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
