@@ -645,6 +645,7 @@ export default function App() {
               teamScores={teamScores}
               setTeamScores={setTeamScores}
               genAlphaMode={genAlphaMode}
+              activeMeeting={selectedMeeting}
             />
           </motion.div>
         )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Sparkles, 
   Volume2, 
@@ -14,11 +14,12 @@ import {
   Layers,
   ArrowRight,
   Flame,
-  Info
+  Info,
+  Target
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import confetti from 'canvas-confetti';
-import { TRICKY_PATTERNS } from '../data/reviewData';
+import { TRICKY_PATTERNS, MEETING_2_PATTERNS, MEETING_3_PATTERNS } from '../data/reviewData';
 import { sound } from './SoundManager';
 import { humanVoice } from '../utils/humanVoice';
 import { MeetingSession } from '../types';
@@ -32,6 +33,7 @@ interface PatternLabProps {
 
 interface PatternQuizQuestion {
   id: string;
+  meeting: 'meeting-2' | 'meeting-3';
   patternType: string;
   prompt: string;
   wordClue: string;
@@ -42,131 +44,159 @@ interface PatternQuizQuestion {
 }
 
 const PATTERN_QUESTIONS: PatternQuizQuestion[] = [
+  // Meeting 2 Questions
   {
-    id: 'pq-1',
-    patternType: 'Silent Letters',
-    prompt: "In the word 'knight', which letter is silent?",
-    wordClue: "The armored warrior",
-    options: ['k', 'n', 'g', 'h'],
-    correct: 'k',
-    explanation: "The 'k' is completely silent in 'knight'! Pronounced /naɪt/.",
-    audioWord: 'knight'
-  },
-  {
-    id: 'pq-2',
-    patternType: 'Double Letters',
-    prompt: "Which spelling correctly captures the double letters in this tricky word?",
-    wordClue: "To cause someone to feel self-conscious or ashamed",
-    options: ['embarass', 'embarrass', 'emabarass', 'embaras'],
-    correct: 'embarrass',
-    explanation: "Two r's and two s's! (e-m-b-a-r-r-a-s-s). Remember: Two R's, Two S's!",
-    audioWord: 'embarrass'
-  },
-  {
-    id: 'pq-3',
-    patternType: 'Double Letters',
-    prompt: "How is 'vacuum' correctly spelled?",
-    wordClue: "A space with nothing in it",
-    options: ['vaccuum', 'vacuum', 'vacume', 'vacumm'],
-    correct: 'vacuum',
-    explanation: "Vacuum has a single 'c' and a rare DOUBLE 'u' (v-a-c-u-u-m)!",
-    audioWord: 'vacuum'
-  },
-  {
-    id: 'pq-4',
-    patternType: 'Double Letters',
-    prompt: "Which is the correct spelling for 'occasion'?",
-    wordClue: "A special event or celebration",
-    options: ['occassion', 'ocasion', 'occasion', 'ocassion'],
-    correct: 'occasion',
-    explanation: "Occasion has TWO 'c's followed by a SINGLE 's'!",
-    audioWord: 'occasion'
-  },
-  {
-    id: 'pq-5',
-    patternType: 'Roots & Affixes',
-    prompt: "What does the root 'bio-' mean in 'biology' and 'amphibian'?",
-    wordClue: "Greek root 'bio'",
-    options: ['life', 'far away', 'water', 'fear'],
-    correct: 'life',
-    explanation: "'bio' comes from ancient Greek meaning 'life' or 'living organisms'!",
-    audioWord: 'biology'
-  },
-  {
-    id: 'pq-6',
-    patternType: 'Roots & Affixes',
-    prompt: "What does the prefix 'dis-' mean in 'disembark'?",
-    wordClue: "disembark = to leave a ship or plane",
-    options: ['together / with', 'not / away from', 'very fast', 'above / over'],
-    correct: 'not / away from',
-    explanation: "'dis-' means 'not / away' — disembark means stepping away from a vessel!",
+    id: 'pq-m2-1',
+    meeting: 'meeting-2',
+    patternType: "Prefix DIS- ('Not' / 'Away')",
+    prompt: "What does the Latin prefix 'dis-' mean in 'disembark' and 'disconnect'?",
+    wordClue: "disembark = to leave a ship, boat, or airplane",
+    options: ['together / with', 'not / opposite / away from', 'very quickly', 'above / higher'],
+    correct: 'not / opposite / away from',
+    explanation: "'dis-' means 'not / away' — to disembark is to leave a vessel!",
     audioWord: 'disembark'
   },
   {
-    id: 'pq-7',
-    patternType: 'Roots & Affixes',
+    id: 'pq-m2-2',
+    meeting: 'meeting-2',
+    patternType: "Root TELE- ('Far' / 'Distant')",
     prompt: "What does the Greek root 'tele-' mean in 'telepathic' and 'telescope'?",
-    wordClue: "telepathic = reading minds from far away",
-    options: ['sound', 'close / near', 'far / distant', 'smart'],
+    wordClue: "telepathic = reading thoughts from across a distance",
+    options: ['close / near', 'far / distant', 'sound / voice', 'fear of darkness'],
     correct: 'far / distant',
-    explanation: "'tele-' means 'far' or 'distant' in Greek!",
+    explanation: "'tele-' means 'far' or 'distant' in Greek (telescope, telephone, telepathic)!",
     audioWord: 'telepathic'
   },
   {
-    id: 'pq-8',
-    patternType: 'Roots & Affixes',
-    prompt: "What does the suffix '-ous' signify in 'harmonious' and 'courageous'?",
+    id: 'pq-m2-3',
+    meeting: 'meeting-2',
+    patternType: "Suffix -OUS (Adjective 'Full of')",
+    prompt: "What does the suffix '-ous' turn words into in 'harmonious' and 'courageous'?",
     wordClue: "harmonious = full of harmony",
-    options: ['without any', 'full of / having the quality of', 'fear of', 'study of'],
-    correct: 'full of / having the quality of',
-    explanation: "'-ous' turns words into adjectives meaning 'full of'!",
+    options: ['noun (person)', 'adjective meaning full of / characterized by', 'verb (action)', 'plural noun'],
+    correct: 'adjective meaning full of / characterized by',
+    explanation: "'-ous' creates adjectives meaning 'full of' (harmonious, perilous, courageous)!",
     audioWord: 'harmonious'
   },
   {
-    id: 'pq-9',
-    patternType: 'French Loanwords',
-    prompt: "Which French loanword keeps its accent mark and means an evening party?",
-    wordClue: "From Meeting 3 spotlight",
-    options: ['soirée', 'duvet', 'faux', 'rotisserie'],
+    id: 'pq-m2-4',
+    meeting: 'meeting-2',
+    patternType: "Silent Letter Trap",
+    prompt: "In the Meeting 2 word 'guardian', which letter is silent?",
+    wordClue: "A person who protects or takes care of someone",
+    options: ['g', 'u', 'a', 'r'],
+    correct: 'u',
+    explanation: "The 'u' is silent in 'guardian' (g-u-a-r-d-i-a-n)! Pronounced /ˈɡɑːr.di.ən/.",
+    audioWord: 'guardian'
+  },
+  {
+    id: 'pq-m2-5',
+    meeting: 'meeting-2',
+    patternType: "Vowel Digraph Trap",
+    prompt: "How does the Meeting 2 word 'eavesdrop' begin?",
+    wordClue: "To secretly listen to a private conversation",
+    options: ['eves-', 'eaves-', 'eavs-', 'eev-'],
+    correct: 'eaves-',
+    explanation: "Eavesdrop begins with 'e-a-v-e-s', referring to roof eaves where rainwater drips!",
+    audioWord: 'eavesdrop'
+  },
+  {
+    id: 'pq-m2-6',
+    meeting: 'meeting-2',
+    patternType: "Double Consonants",
+    prompt: "Which spelling correctly captures the double consonants in 'flannel'?",
+    wordClue: "Meeting 2 Mock Bee word for soft woven fabric",
+    options: ['flanel', 'flannel', 'flannell', 'fflannel'],
+    correct: 'flannel',
+    explanation: "Flannel has a double 'n' with a single 'l' (f-l-a-n-n-e-l)!",
+    audioWord: 'flannel'
+  },
+
+  // Meeting 3 Questions
+  {
+    id: 'pq-m3-1',
+    meeting: 'meeting-3',
+    patternType: "French Loanwords",
+    prompt: "Which French loanword keeps its acute accent (é) and means an evening party?",
+    wordClue: "From Meeting 3 French Loanword Spotlight",
+    options: ['duvet', 'faux', 'soirée', 'rotisserie'],
     correct: 'soirée',
-    explanation: "Soirée keeps its French acute accent mark (é) and describes an evening social gathering!",
+    explanation: "Soirée keeps its French accent mark (é) and describes an elegant evening reception!",
     audioWord: 'soirée'
   },
   {
-    id: 'pq-10',
-    patternType: 'Roots & Affixes',
-    prompt: "What does the root 'phil-' mean in 'philharmonic' and 'philosophy'?",
-    wordClue: "philharmonic = devoted to music",
-    options: ['fear', 'wisdom', 'love / devotion', 'skill'],
-    correct: 'love / devotion',
-    explanation: "The Greek root 'phil-' means 'love' or 'devoted to'!",
+    id: 'pq-m3-2',
+    meeting: 'meeting-3',
+    patternType: "Root PHIL- ('Love' / 'Devotion')",
+    prompt: "What does the Greek root 'phil-' mean in 'philharmonic' and 'philosophy'?",
+    wordClue: "philharmonic = in love with harmony/music",
+    options: ['fear / fright', 'love / devotion to', 'wisdom only', 'speed'],
+    correct: 'love / devotion to',
+    explanation: "'phil-' means 'love' or 'devoted to' in Greek!",
     audioWord: 'philharmonic'
   },
   {
-    id: 'pq-11',
-    patternType: 'Roots & Affixes',
-    prompt: "What does the root '-phobia' mean in 'brontophobia'?",
-    wordClue: "brontophobia = extreme fear of thunder",
-    options: ['love', 'fear', 'sound', 'storm'],
-    correct: 'fear',
-    explanation: "'-phobia' means extreme or irrational fear!",
+    id: 'pq-m3-3',
+    meeting: 'meeting-3',
+    patternType: "Root -PHOBIA ('Extreme Fear')",
+    prompt: "What does the Greek root '-phobia' mean in 'brontophobia' (fear of thunder)?",
+    wordClue: "brontophobia = extreme terror during lightning and thunder",
+    options: ['extreme fear / aversion', 'study of storms', 'love of rain', 'sound of thunder'],
+    correct: 'extreme fear / aversion',
+    explanation: "'-phobia' signifies extreme or irrational fear! Always spelled p-h-o-b-i-a.",
     audioWord: 'brontophobia'
   },
   {
-    id: 'pq-12',
-    patternType: 'Silent Letters',
-    prompt: "In the word 'doubt', which letter is silent?",
-    wordClue: "A feeling of uncertainty",
-    options: ['d', 'o', 'u', 'b'],
-    correct: 'b',
-    explanation: "The 'b' is silent in 'doubt'! Pronounced /daʊt/.",
-    audioWord: 'doubt'
+    id: 'pq-m3-4',
+    meeting: 'meeting-3',
+    patternType: "Double Consonant Trap",
+    prompt: "How is the Two-Bee employee word 'personnel' correctly spelled?",
+    wordClue: "Meeting 3 Warm-Up word for staff/employees",
+    options: ['personal', 'personel', 'personnel', 'perrsonel'],
+    correct: 'personnel',
+    explanation: "Personnel has DOUBLE 'n' and single 'l' (p-e-r-s-o-n-n-e-l), unlike 'personal'!",
+    audioWord: 'personnel'
+  },
+  {
+    id: 'pq-m3-5',
+    meeting: 'meeting-3',
+    patternType: "Vowel Placement Trap",
+    prompt: "Which is the correct spelling for dental 'fluoride'?",
+    wordClue: "Meeting 3 Warm-Up word: mineral that strengthens tooth enamel",
+    options: ['flouride', 'fluoride', 'floride', 'fluorid'],
+    correct: 'fluoride',
+    explanation: "'u' comes before 'o' in 'fluoride' (f-l-u-o-r-i-d-e) from fluorine, not flour!",
+    audioWord: 'fluoride'
   }
 ];
 
-export default function PatternReviewLab({ onAwardTeamScore, genAlphaMode }: PatternLabProps) {
+export default function PatternReviewLab({ onAwardTeamScore, genAlphaMode, activeMeeting = 'meeting-2' }: PatternLabProps) {
+  const [sessionMeeting, setSessionMeeting] = useState<'meeting-2' | 'meeting-3'>(
+    activeMeeting === 'meeting-3' ? 'meeting-3' : 'meeting-2'
+  );
+
+  useEffect(() => {
+    if (activeMeeting === 'meeting-2' || activeMeeting === 'meeting-3') {
+      setSessionMeeting(activeMeeting);
+    }
+  }, [activeMeeting]);
+
   const [activeSubTab, setActiveSubTab] = useState<'explorer' | 'quiz'>('explorer');
-  const [selectedPatternId, setSelectedPatternId] = useState<string>(TRICKY_PATTERNS[0].id);
+
+  // Meeting specific patterns
+  const meetingPatterns = sessionMeeting === 'meeting-2' ? MEETING_2_PATTERNS : MEETING_3_PATTERNS;
+  const [selectedPatternId, setSelectedPatternId] = useState<string>(meetingPatterns[0]?.id || TRICKY_PATTERNS[0].id);
+
+  // Sync selected pattern when meeting changes
+  useEffect(() => {
+    const list = sessionMeeting === 'meeting-2' ? MEETING_2_PATTERNS : MEETING_3_PATTERNS;
+    if (list.length > 0) {
+      setSelectedPatternId(list[0].id);
+    }
+  }, [sessionMeeting]);
+
+  // Meeting specific quiz questions
+  const meetingQuestions = PATTERN_QUESTIONS.filter(q => q.meeting === sessionMeeting);
 
   // Quiz State
   const [currentQIndex, setCurrentQIndex] = useState<number>(0);
@@ -175,8 +205,8 @@ export default function PatternReviewLab({ onAwardTeamScore, genAlphaMode }: Pat
   const [score, setScore] = useState<number>(0);
   const [showSummary, setShowSummary] = useState<boolean>(false);
 
-  const selectedPattern = TRICKY_PATTERNS.find(p => p.id === selectedPatternId) || TRICKY_PATTERNS[0];
-  const currentQ = PATTERN_QUESTIONS[currentQIndex];
+  const selectedPattern = meetingPatterns.find(p => p.id === selectedPatternId) || meetingPatterns[0] || TRICKY_PATTERNS[0];
+  const currentQ = meetingQuestions[currentQIndex] || meetingQuestions[0];
 
   const handleSelectOption = (opt: string) => {
     if (isAnswered) return;
@@ -197,7 +227,7 @@ export default function PatternReviewLab({ onAwardTeamScore, genAlphaMode }: Pat
   };
 
   const handleNextQuestion = () => {
-    if (currentQIndex < PATTERN_QUESTIONS.length - 1) {
+    if (currentQIndex < meetingQuestions.length - 1) {
       setCurrentQIndex(prev => prev + 1);
       setSelectedOption(null);
       setIsAnswered(false);
@@ -267,7 +297,61 @@ export default function PatternReviewLab({ onAwardTeamScore, genAlphaMode }: Pat
                 : 'text-[#560e51] hover:bg-fuchsia-100'
             }`}
           >
-            Pattern Quiz ⚡ ({score}/{PATTERN_QUESTIONS.length})
+            Pattern Quiz ⚡ ({score}/{meetingQuestions.length})
+          </button>
+        </div>
+      </div>
+
+      {/* Explicit Learning Goal & Objectives Banner */}
+      <div className="bg-gradient-to-r from-fuchsia-50 via-amber-50 to-lime-50 rounded-2xl p-4 sm:p-5 border-3 border-[#560e51] shadow-[4px_4px_0px_0px_#560e51] flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-start gap-3">
+          <div className="p-2.5 bg-[#560e51] text-white rounded-xl shadow-[2px_2px_0px_0px_#78c222] shrink-0">
+            <Target className="h-6 w-6 text-[#78c222]" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-black uppercase tracking-wider bg-[#560e51] text-white px-2.5 py-0.5 rounded-full font-mono">
+                {sessionMeeting === 'meeting-2' ? 'Meeting 2 Learning Goal' : 'Meeting 3 Learning Goal'}
+              </span>
+              <span className="text-xs font-bold text-slate-600">
+                {sessionMeeting === 'meeting-2' ? 'Target: Word Roots & Affixes' : 'Target: Two-Bee Level Words & French Roots'}
+              </span>
+            </div>
+            <p className="text-sm font-black text-slate-900 mt-1">
+              {sessionMeeting === 'meeting-2'
+                ? "Master Latin prefix DIS- ('disembark'), Greek root TELE- ('telepathic'), and adjective suffix -OUS ('harmonious')."
+                : "Master French loanwords with accents ('soirée', 'duvet'), Greek root PHIL- ('philharmonic'), and -PHOBIA ('brontophobia')."}
+            </p>
+          </div>
+        </div>
+
+        {/* Meeting Toggle */}
+        <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border-2 border-[#560e51] shadow-[2px_2px_0px_0px_#560e51] shrink-0 self-start md:self-auto">
+          <button
+            onClick={() => {
+              setSessionMeeting('meeting-2');
+              sound.playClick();
+            }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black uppercase font-mono transition-all cursor-pointer ${
+              sessionMeeting === 'meeting-2'
+                ? 'bg-[#78c222] text-[#560e51] border-2 border-[#560e51] shadow-[1px_1px_0px_0px_#560e51]'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            Meeting 2
+          </button>
+          <button
+            onClick={() => {
+              setSessionMeeting('meeting-3');
+              sound.playClick();
+            }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black uppercase font-mono transition-all cursor-pointer ${
+              sessionMeeting === 'meeting-3'
+                ? 'bg-[#9b2c98] text-white border-2 border-[#560e51] shadow-[1px_1px_0px_0px_#560e51]'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            Meeting 3
           </button>
         </div>
       </div>
@@ -276,61 +360,110 @@ export default function PatternReviewLab({ onAwardTeamScore, genAlphaMode }: Pat
       {activeSubTab === 'explorer' && (
         <div className="space-y-6">
           
-          {/* PPT Slide 6 Highlights Banner: Hexagonal Styled Cards */}
+          {/* PPT Highlights Banner: Meeting Specific Core Pillars */}
           <div className="bg-[#fffdf5] rounded-[28px] p-6 border-3 border-[#560e51] shadow-[4px_4px_0px_0px_#560e51]">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-xs font-black uppercase font-mono text-[#9b2c98] bg-fuchsia-100 px-3 py-1 rounded-lg border border-[#560e51]">
-                PPT Slide 6 Core Showcase
+                {sessionMeeting === 'meeting-2' ? 'Meeting 2 Core Pillars' : 'Meeting 3 Core Pillars'}
               </span>
-              <span className="text-xs font-bold text-slate-500">The 3 Big Pillars</span>
+              <span className="text-xs font-bold text-slate-500">Essential Patterns for Today's Assessment</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Pillar 1: Silent Letters */}
-              <div className="bg-white p-5 rounded-2xl border-2 border-[#560e51] shadow-[3px_3px_0px_0px_#560e51] text-center flex flex-col items-center">
-                <span className="text-xs font-black uppercase tracking-wider text-amber-700 font-mono mb-2">Silent Letters</span>
-                <div className="w-20 h-20 bg-amber-500 text-white rounded-[18px] flex flex-col items-center justify-center font-black text-lg border-2 border-[#560e51] shadow-[2px_2px_0px_0px_#560e51] mb-3">
-                  <span>knight</span>
+            {sessionMeeting === 'meeting-2' ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Pillar 1: Prefix DIS- */}
+                <div className="bg-white p-5 rounded-2xl border-2 border-[#560e51] shadow-[3px_3px_0px_0px_#560e51] text-center flex flex-col items-center">
+                  <span className="text-xs font-black uppercase tracking-wider text-amber-700 font-mono mb-2">Prefix DIS- ('Not/Away')</span>
+                  <div className="w-24 h-16 bg-amber-500 text-white rounded-[18px] flex flex-col items-center justify-center font-black text-sm border-2 border-[#560e51] shadow-[2px_2px_0px_0px_#560e51] mb-3">
+                    <span>disembark</span>
+                  </div>
+                  <p className="text-xs font-bold text-slate-800">To leave or step away from a ship!</p>
+                  <button
+                    onClick={() => humanVoice.speakWord('disembark')}
+                    className="mt-3 px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs font-black uppercase border border-amber-400 flex items-center gap-1 cursor-pointer"
+                  >
+                    <Volume2 className="h-3.5 w-3.5" /> Listen
+                  </button>
                 </div>
-                <p className="text-xs font-bold text-slate-800">The <strong className="text-amber-800">'k'</strong> is silent!</p>
-                <button
-                  onClick={() => humanVoice.speakWord('knight')}
-                  className="mt-3 px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs font-black uppercase border border-amber-400 flex items-center gap-1 cursor-pointer"
-                >
-                  <Volume2 className="h-3.5 w-3.5" /> Listen
-                </button>
-              </div>
 
-              {/* Pillar 2: Double Letters */}
-              <div className="bg-white p-5 rounded-2xl border-2 border-[#560e51] shadow-[3px_3px_0px_0px_#560e51] text-center flex flex-col items-center">
-                <span className="text-xs font-black uppercase tracking-wider text-rose-700 font-mono mb-2">Double Letters</span>
-                <div className="w-20 h-20 bg-rose-500 text-white rounded-[18px] flex flex-col items-center justify-center font-black text-sm text-center px-1 border-2 border-[#560e51] shadow-[2px_2px_0px_0px_#560e51] mb-3">
-                  <span>embarrass</span>
+                {/* Pillar 2: Root TELE- */}
+                <div className="bg-white p-5 rounded-2xl border-2 border-[#560e51] shadow-[3px_3px_0px_0px_#560e51] text-center flex flex-col items-center">
+                  <span className="text-xs font-black uppercase tracking-wider text-rose-700 font-mono mb-2">Root TELE- ('Far Away')</span>
+                  <div className="w-24 h-16 bg-rose-500 text-white rounded-[18px] flex flex-col items-center justify-center font-black text-sm text-center px-1 border-2 border-[#560e51] shadow-[2px_2px_0px_0px_#560e51] mb-3">
+                    <span>telepathic</span>
+                  </div>
+                  <p className="text-xs font-bold text-slate-800">Feeling thoughts from across a distance!</p>
+                  <button
+                    onClick={() => humanVoice.speakWord('telepathic')}
+                    className="mt-3 px-3 py-1 bg-rose-100 hover:bg-rose-200 text-rose-900 rounded-lg text-xs font-black uppercase border border-rose-400 flex items-center gap-1 cursor-pointer"
+                  >
+                    <Volume2 className="h-3.5 w-3.5" /> Listen
+                  </button>
                 </div>
-                <p className="text-xs font-bold text-slate-800">Two <strong className="text-rose-800">r's</strong>, two <strong className="text-rose-800">s's</strong>!</p>
-                <button
-                  onClick={() => humanVoice.speakWord('embarrass')}
-                  className="mt-3 px-3 py-1 bg-rose-100 hover:bg-rose-200 text-rose-900 rounded-lg text-xs font-black uppercase border border-rose-400 flex items-center gap-1 cursor-pointer"
-                >
-                  <Volume2 className="h-3.5 w-3.5" /> Listen
-                </button>
-              </div>
 
-              {/* Pillar 3: Tricky Roots */}
-              <div className="bg-white p-5 rounded-2xl border-2 border-[#560e51] shadow-[3px_3px_0px_0px_#560e51] text-center flex flex-col items-center">
-                <span className="text-xs font-black uppercase tracking-wider text-emerald-700 font-mono mb-2">Tricky Roots</span>
-                <div className="w-20 h-20 bg-emerald-600 text-white rounded-[18px] flex flex-col items-center justify-center font-black text-base border-2 border-[#560e51] shadow-[2px_2px_0px_0px_#560e51] mb-3">
-                  <span>biology</span>
+                {/* Pillar 3: Suffix -OUS */}
+                <div className="bg-white p-5 rounded-2xl border-2 border-[#560e51] shadow-[3px_3px_0px_0px_#560e51] text-center flex flex-col items-center">
+                  <span className="text-xs font-black uppercase tracking-wider text-emerald-700 font-mono mb-2">Suffix -OUS ('Full Of')</span>
+                  <div className="w-24 h-16 bg-emerald-600 text-white rounded-[18px] flex flex-col items-center justify-center font-black text-sm border-2 border-[#560e51] shadow-[2px_2px_0px_0px_#560e51] mb-3">
+                    <span>harmonious</span>
+                  </div>
+                  <p className="text-xs font-bold text-slate-800">Adjective meaning full of harmony!</p>
+                  <button
+                    onClick={() => humanVoice.speakWord('harmonious')}
+                    className="mt-3 px-3 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 rounded-lg text-xs font-black uppercase border border-emerald-400 flex items-center gap-1 cursor-pointer"
+                  >
+                    <Volume2 className="h-3.5 w-3.5" /> Listen
+                  </button>
                 </div>
-                <p className="text-xs font-bold text-slate-800"><strong className="text-emerald-800">'bio'</strong> = life!</p>
-                <button
-                  onClick={() => humanVoice.speakWord('biology')}
-                  className="mt-3 px-3 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 rounded-lg text-xs font-black uppercase border border-emerald-400 flex items-center gap-1 cursor-pointer"
-                >
-                  <Volume2 className="h-3.5 w-3.5" /> Listen
-                </button>
               </div>
-            </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Pillar 1: French Loanwords */}
+                <div className="bg-white p-5 rounded-2xl border-2 border-[#560e51] shadow-[3px_3px_0px_0px_#560e51] text-center flex flex-col items-center">
+                  <span className="text-xs font-black uppercase tracking-wider text-purple-700 font-mono mb-2">French Loanwords</span>
+                  <div className="w-24 h-16 bg-purple-600 text-white rounded-[18px] flex flex-col items-center justify-center font-black text-sm border-2 border-[#560e51] shadow-[2px_2px_0px_0px_#560e51] mb-3">
+                    <span>soirée</span>
+                  </div>
+                  <p className="text-xs font-bold text-slate-800">Keeps acute accent (é): evening party!</p>
+                  <button
+                    onClick={() => humanVoice.speakWord('soirée')}
+                    className="mt-3 px-3 py-1 bg-purple-100 hover:bg-purple-200 text-purple-900 rounded-lg text-xs font-black uppercase border border-purple-400 flex items-center gap-1 cursor-pointer"
+                  >
+                    <Volume2 className="h-3.5 w-3.5" /> Listen
+                  </button>
+                </div>
+
+                {/* Pillar 2: Root PHIL- */}
+                <div className="bg-white p-5 rounded-2xl border-2 border-[#560e51] shadow-[3px_3px_0px_0px_#560e51] text-center flex flex-col items-center">
+                  <span className="text-xs font-black uppercase tracking-wider text-cyan-700 font-mono mb-2">Root PHIL- ('Love')</span>
+                  <div className="w-24 h-16 bg-cyan-600 text-white rounded-[18px] flex flex-col items-center justify-center font-black text-sm text-center px-1 border-2 border-[#560e51] shadow-[2px_2px_0px_0px_#560e51] mb-3">
+                    <span>philharmonic</span>
+                  </div>
+                  <p className="text-xs font-bold text-slate-800">'phil-' = devoted to / love of music!</p>
+                  <button
+                    onClick={() => humanVoice.speakWord('philharmonic')}
+                    className="mt-3 px-3 py-1 bg-cyan-100 hover:bg-cyan-200 text-cyan-900 rounded-lg text-xs font-black uppercase border border-cyan-400 flex items-center gap-1 cursor-pointer"
+                  >
+                    <Volume2 className="h-3.5 w-3.5" /> Listen
+                  </button>
+                </div>
+
+                {/* Pillar 3: Root -PHOBIA */}
+                <div className="bg-white p-5 rounded-2xl border-2 border-[#560e51] shadow-[3px_3px_0px_0px_#560e51] text-center flex flex-col items-center">
+                  <span className="text-xs font-black uppercase tracking-wider text-rose-700 font-mono mb-2">Root -PHOBIA ('Fear')</span>
+                  <div className="w-24 h-16 bg-rose-600 text-white rounded-[18px] flex flex-col items-center justify-center font-black text-sm border-2 border-[#560e51] shadow-[2px_2px_0px_0px_#560e51] mb-3">
+                    <span>brontophobia</span>
+                  </div>
+                  <p className="text-xs font-bold text-slate-800">p-h-o-b-i-a = extreme fear of thunder!</p>
+                  <button
+                    onClick={() => humanVoice.speakWord('brontophobia')}
+                    className="mt-3 px-3 py-1 bg-rose-100 hover:bg-rose-200 text-rose-900 rounded-lg text-xs font-black uppercase border border-rose-400 flex items-center gap-1 cursor-pointer"
+                  >
+                    <Volume2 className="h-3.5 w-3.5" /> Listen
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Pattern Selector Carousel & Details */}
@@ -339,10 +472,10 @@ export default function PatternReviewLab({ onAwardTeamScore, genAlphaMode }: Pat
             {/* Pattern List Sidebar */}
             <div className="lg:col-span-5 space-y-2">
               <h3 className="text-xs font-black uppercase font-mono text-[#560e51] tracking-wider mb-2">
-                All 9 Pattern Spotlights:
+                {sessionMeeting === 'meeting-2' ? 'Meeting 2 Patterns (3 Spotlights)' : 'Meeting 3 Patterns (3 Spotlights)'}:
               </h3>
               <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
-                {TRICKY_PATTERNS.map((p) => {
+                {meetingPatterns.map((p) => {
                   const isSelected = p.id === selectedPatternId;
                   return (
                     <div
@@ -468,7 +601,7 @@ export default function PatternReviewLab({ onAwardTeamScore, genAlphaMode }: Pat
               {/* Progress Bar & Header */}
               <div className="flex items-center justify-between border-b-2 border-fuchsia-100 pb-3">
                 <span className="text-xs font-black uppercase font-mono text-[#9b2c98]">
-                  Question {currentQIndex + 1} of {PATTERN_QUESTIONS.length}
+                  Question {currentQIndex + 1} of {meetingQuestions.length}
                 </span>
                 <span className="text-xs font-black uppercase font-mono text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
                   Score: {score} Pts
@@ -553,7 +686,7 @@ export default function PatternReviewLab({ onAwardTeamScore, genAlphaMode }: Pat
                     onClick={handleNextQuestion}
                     className="w-full py-3.5 bg-[#78c222] hover:bg-[#68ab1c] text-[#560e51] font-black text-sm uppercase tracking-wide rounded-2xl border-3 border-[#560e51] shadow-[3px_3px_0px_0px_#560e51] cursor-pointer flex items-center justify-center gap-2"
                   >
-                    <span>{currentQIndex === PATTERN_QUESTIONS.length - 1 ? 'See Final Score 🏆' : 'Next Question ➡️'}</span>
+                    <span>{currentQIndex === meetingQuestions.length - 1 ? 'See Final Score 🏆' : 'Next Question ➡️'}</span>
                   </button>
                 </motion.div>
               )}
@@ -568,7 +701,7 @@ export default function PatternReviewLab({ onAwardTeamScore, genAlphaMode }: Pat
               <div>
                 <span className="text-xs font-black uppercase font-mono text-[#9b2c98]">Pattern Mastery Quiz Completed</span>
                 <h3 className="text-3xl font-black text-slate-900 uppercase tracking-tight mt-1">
-                  You Scored {score} / {PATTERN_QUESTIONS.length}!
+                  You Scored {score} / {meetingQuestions.length}!
                 </h3>
                 <p className="text-xs sm:text-sm font-bold text-slate-600 mt-2 max-w-md mx-auto">
                   {score >= 10

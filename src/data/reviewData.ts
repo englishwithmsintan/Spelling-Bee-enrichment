@@ -273,10 +273,11 @@ export const MEETING_2_STATION_3_QUIZ: string[] = [
 ];
 
 // Slide 10: Mock Spelling Bee Stage List (Meeting 2 - 15 words)
+// Specifically aligned to grade 3-6 lesson patterns (dis-, tele-, -ous, silent letters, double consonants)
 export const MEETING_2_MOCK_BEE_WORDS: string[] = [
-  'gimmick', 'flannel', 'cucumber', 'janitor', 'lionize',
-  'spreadsheet', 'badger', 'nephew', 'imbibe', 'savvy',
-  'reckon', 'boorish', 'nurture', 'volcano', 'forensics'
+  'disembark', 'flannel', 'telepathic', 'guardian', 'harmonious',
+  'gimmick', 'cucumber', 'eavesdrop', 'nephew', 'astonish',
+  'janitor', 'amphibian', 'miraculous', 'volcano', 'disconnect'
 ];
 
 // Slide 12: Progress Check Word List (Meeting 2 - 10 words)
@@ -652,10 +653,11 @@ export const MEETING_3_STATION_3_QUIZ: string[] = [
 ];
 
 // Slide 10: Mock Spelling Bee Stage List (Meeting 3 - 15 words)
+// Specifically aligned to grade 3-6 lesson patterns (French loanwords, roots phil- & -phobia, Two-Bee patterns)
 export const MEETING_3_MOCK_BEE_WORDS: string[] = [
-  'banal', 'seismologist', 'spectacles', 'innovator', 'bursary',
-  'hallowed', 'apogee', 'hiatus', 'freesia', 'exoneration',
-  'duvet', 'turpitude', 'platitude', 'nobiliary', 'commerce'
+  'soirée', 'philharmonic', 'brontophobia', 'duvet', 'spectacles',
+  'innovator', 'personnel', 'rotisserie', 'perseverance', 'buoyancy',
+  'fluoride', 'hallowed', 'seismologist', 'fondant', 'commerce'
 ];
 
 // Slide 12: Progress Check Word List (Meeting 3 - 10 words)
@@ -958,41 +960,42 @@ export const POST_TEST_WORDS: DictationWord[] = MEETING_2_PROGRESS_CHECK;
 
 // =============================================================================
 // WORDWALL "OPEN THE BOX" 30 CHALLENGES (15 from Meeting 2 + 15 from Meeting 3)
+// Specially curated and kid-friendly for Grades 3-6, strictly mapped to lesson patterns
 // =============================================================================
 export const OPEN_THE_BOX_30: BoxChallenge[] = [
-  // Boxes 1 - 15: Meeting 2 Mock Bee Words (Slide 10)
-  { boxNumber: 1, word: 'gimmick', definition: 'a trick or device intended to attract attention', sentence: 'The flashy neon flyer was just an advertising gimmick.', hint: "Double 'm': g-i-m-m-i-c-k", level: 'Medium', points: 15 },
-  { boxNumber: 2, word: 'flannel', definition: 'a soft-woven woollen or cotton cloth', sentence: 'He wore a checkered flannel jacket on brisk mornings.', hint: "Double 'n': f-l-a-n-n-e-l", level: 'Medium', points: 15 },
-  { boxNumber: 3, word: 'cucumber', definition: 'a long green-skinned vegetable eaten in salads', sentence: 'Cool crisp cucumber slices topped the sandwich.', hint: "c-u-c-u-m-b-e-r", level: 'Medium', points: 10 },
-  { boxNumber: 4, word: 'janitor', definition: 'a person employed to clean and care for a building', sentence: 'Our friendly school janitor unlocked the classroom.', hint: "Ends in '-or' (not '-er')", level: 'Medium', points: 15 },
-  { boxNumber: 5, word: 'lionize', definition: 'give a lot of public attention and praise to someone', sentence: 'The city gathered to lionize the Olympic champion.', hint: "American '-ize': l-i-o-n-i-z-e", level: 'Two-Bee', points: 25 },
-  { boxNumber: 6, word: 'spreadsheet', definition: 'an electronic document arranged in rows and columns', sentence: 'She calculated the team scores on a spreadsheet.', hint: "Compound: 'spread' + 'sheet'", level: 'Medium', points: 15 },
-  { boxNumber: 7, word: 'badger', definition: 'a heavily built burrowing mammal with a striped face', sentence: 'A nocturnal badger stepped out of its grassy den.', hint: "b-a-d-g-e-r", level: 'Medium', points: 10 },
-  { boxNumber: 8, word: 'nephew', definition: 'a son of one’s brother or sister', sentence: 'His aunt took her nephew to the natural history museum.', hint: "'ph' as /f/: n-e-p-h-e-w", level: 'Medium', points: 15 },
-  { boxNumber: 9, word: 'imbibe', definition: 'to drink liquids or absorb wisdom and knowledge', sentence: 'Scholars visit the library to imbibe great ideas.', hint: "i-m-b-i-b-e", level: 'Two-Bee', points: 20 },
-  { boxNumber: 10, word: 'savvy', definition: 'shrewd and knowledgeable in practical matters', sentence: 'A savvy speller listens closely to the word origin.', hint: "Double 'v': s-a-v-v-y", level: 'Two-Bee', points: 20 },
-  { boxNumber: 11, word: 'reckon', definition: 'establish by calculation, or consider / believe', sentence: 'I reckon our class will earn top honors today.', hint: "Ends in '-on': r-e-c-k-o-n", level: 'Medium', points: 15 },
-  { boxNumber: 12, word: 'boorish', definition: 'rough and bad-mannered; coarse', sentence: 'Talking loudly during the competition is boorish.', hint: "Double 'o': b-o-o-r-i-s-h", level: 'Two-Bee', points: 20 },
-  { boxNumber: 13, word: 'nurture', definition: 'care for and encourage the growth of someone', sentence: 'Parents nurture their children’s talents with love.', hint: "n-u-r-t-u-r-e", level: 'Medium', points: 15 },
-  { boxNumber: 14, word: 'volcano', definition: 'a mountain with a crater that erupts lava', sentence: 'Mount Fuji is an iconic snow-capped volcano in Japan.', hint: "v-o-l-c-a-n-o", level: 'Medium', points: 10 },
-  { boxNumber: 15, word: 'forensics', definition: 'scientific tests or techniques used to solve crimes', sentence: 'The laboratory technician worked in digital forensics.', hint: "f-o-r-e-n-s-i-c-s", level: 'Two-Bee', points: 25 },
+  // Boxes 1 - 15: Meeting 2 Words (Roots: dis-, tele-, -ous, double consonants & silent letters)
+  { boxNumber: 1, word: 'disembark', definition: 'to leave a ship, airplane, or vehicle at the end of a trip', sentence: 'The excited passengers prepared to disembark from the airplane.', hint: "Prefix 'dis-' (away): d-i-s-e-m-b-a-r-k", level: 'Medium', points: 15 },
+  { boxNumber: 2, word: 'flannel', definition: 'a soft-woven cotton or wool fabric used for warm pajamas and shirts', sentence: 'He wore a soft checkered flannel shirt on a cool morning.', hint: "Double 'n': f-l-a-n-n-e-l", level: 'Medium', points: 15 },
+  { boxNumber: 3, word: 'telepathic', definition: 'able to communicate thoughts from far away without speaking aloud', sentence: 'The best friends seemed telepathic because they thought alike.', hint: "Greek root 'tele-' (far): t-e-l-e-p-a-t-h-i-c", level: 'Medium', points: 20 },
+  { boxNumber: 4, word: 'guardian', definition: 'a trusted adult who protects and takes care of a child', sentence: 'Her guardian cheered loudly when she spelled her word correctly.', hint: "Silent 'u' after 'g': g-u-a-r-d-i-a-n", level: 'Medium', points: 15 },
+  { boxNumber: 5, word: 'harmonious', definition: 'having parts that blend together pleasantly; full of harmony', sentence: 'The children sang in a sweet and harmonious melody.', hint: "Suffix '-ous' (full of): h-a-r-m-o-n-i-o-u-s", level: 'Medium', points: 20 },
+  { boxNumber: 6, word: 'gimmick', definition: 'a clever trick or catchy idea used to grab people’s attention', sentence: 'Giving out free stickers was a fun advertising gimmick.', hint: "Double 'm': g-i-m-m-i-c-k", level: 'Medium', points: 15 },
+  { boxNumber: 7, word: 'cucumber', definition: 'a crisp green vegetable often sliced in salads or dipped in hummus', sentence: 'She packed fresh cucumber sticks in her school lunchbox.', hint: "c-u-c-u-m-b-e-r", level: 'Medium', points: 10 },
+  { boxNumber: 8, word: 'eavesdrop', definition: 'to secretly listen in on someone else’s conversation', sentence: 'It is bad manners to eavesdrop on private talks.', hint: "Starts with 'e-a-v-e-s': e-a-v-e-s-d-r-o-p", level: 'Medium', points: 15 },
+  { boxNumber: 9, word: 'nephew', definition: 'the son of your brother or sister', sentence: 'Uncle David took his nephew to the science museum.', hint: "'ph' makes the /f/ sound: n-e-p-h-e-w", level: 'Medium', points: 10 },
+  { boxNumber: 10, word: 'astonish', definition: 'to surprise or amaze someone greatly with something remarkable', sentence: 'The magician’s disappearing rabbit will astonish the audience.', hint: "Ends in '-ish': a-s-t-o-n-i-s-h", level: 'Medium', points: 15 },
+  { boxNumber: 11, word: 'janitor', definition: 'a person who cleans, repairs, and takes good care of a school building', sentence: 'Our friendly school janitor always waves hello in the hall.', hint: "Ends in '-or' (not '-er'): j-a-n-i-t-o-r", level: 'Medium', points: 15 },
+  { boxNumber: 12, word: 'amphibian', definition: 'a cold-blooded creature that can live both in fresh water and on land', sentence: 'A spotted frog is a cute amphibian that starts life as a tadpole.', hint: "Greek 'amphi' + 'bio' with 'ph' as /f/: a-m-p-h-i-b-i-a-n", level: 'Two-Bee', points: 20 },
+  { boxNumber: 13, word: 'miraculous', definition: 'so amazing and wonderful that it seems like a miracle', sentence: 'The tiny kitten made a miraculous recovery after being rescued.', hint: "Suffix '-ulous' (full of): m-i-r-a-c-u-l-o-u-s", level: 'Medium', points: 20 },
+  { boxNumber: 14, word: 'volcano', definition: 'a mountain with an opening that can erupt lava, ash, and steam', sentence: 'The science class built a baking soda volcano model that bubbled over.', hint: "v-o-l-c-a-n-o", level: 'Medium', points: 10 },
+  { boxNumber: 15, word: 'disconnect', definition: 'to break or unplug a link, plug, or electrical connection', sentence: 'Please disconnect the tablet charger once the battery is full.', hint: "Prefix 'dis-' (away/un-): d-i-s-c-o-n-n-e-c-t", level: 'Medium', points: 15 },
 
-  // Boxes 16 - 30: Meeting 3 Mock Bee Words (Slide 10)
-  { boxNumber: 16, word: 'banal', definition: 'so lacking in originality as to be boring or trite', sentence: 'The pop song’s repetitive lyrics felt quite banal.', hint: "b-a-n-a-l (single 'n')", level: 'Two-Bee', points: 20 },
-  { boxNumber: 17, word: 'seismologist', definition: 'a geophysicist who studies earthquakes and earth tremors', sentence: 'The seismologist calibrated the underground sensor.', hint: "Begins with 's-e-i-s'", level: 'Champion', points: 30 },
-  { boxNumber: 18, word: 'spectacles', definition: 'another term for eyeglasses', sentence: 'Grandfather adjusted his spectacles to read the small print.', hint: "s-p-e-c-t-a-c-l-e-s", level: 'Medium', points: 15 },
-  { boxNumber: 19, word: 'innovator', definition: 'a person who introduces new ideas, devices, or methods', sentence: 'The innovative student designed a solar-powered toy car.', hint: "Double 'n', ends in '-or'", level: 'Two-Bee', points: 20 },
-  { boxNumber: 20, word: 'bursary', definition: 'a monetary grant or scholarship given to a student', sentence: 'She received a collegiate bursary for her spelling achievements.', hint: "Ends in '-ary': b-u-r-s-a-r-y", level: 'Two-Bee', points: 25 },
-  { boxNumber: 21, word: 'hallowed', definition: 'honored as holy, sacred, or greatly revered', sentence: 'They stood in quiet reverence in the hallowed hall of heroes.', hint: "Double 'l': h-a-l-l-o-w-e-d", level: 'Two-Bee', points: 20 },
-  { boxNumber: 22, word: 'apogee', definition: 'the highest or most climax point of development; orbital peak', sentence: 'Reaching the Scripps national podium was the apogee of her dream.', hint: "Ends in 'g-e-e': a-p-o-g-e-e", level: 'Champion', points: 30 },
-  { boxNumber: 23, word: 'hiatus', definition: 'a pause or gap in a sequence, series, or activity', sentence: 'The debate team resumed meetings after a summer hiatus.', hint: "h-i-a-t-u-s", level: 'Two-Bee', points: 25 },
-  { boxNumber: 24, word: 'freesia', definition: 'a fragrant flower from South Africa', sentence: 'A bouquet of yellow freesia brightened the banquet table.', hint: "Double 'e': f-r-e-e-s-i-a", level: 'Two-Bee', points: 25 },
-  { boxNumber: 25, word: 'exoneration', definition: 'the action of officially clearing someone from blame or guilt', sentence: 'The jury granted full exoneration after inspecting the proof.', hint: "e-x-o-n-e-r-a-t-i-o-n", level: 'Champion', points: 30 },
-  { boxNumber: 26, word: 'duvet', definition: 'a soft quilt filled with down feathers or fiber', sentence: 'She snuggled under the warm down duvet during the blizzard.', hint: "French: silent 't' at the end", level: 'Two-Bee', points: 20 },
-  { boxNumber: 27, word: 'turpitude', definition: 'depravity or wicked behavior; moral baseness', sentence: 'The court condemned the traitor for gross moral turpitude.', hint: "t-u-r-p-i-t-u-d-e", level: 'Champion', points: 30 },
-  { boxNumber: 28, word: 'platitude', definition: 'a dull, trite remark with moral content', sentence: 'He replied with a tired platitude instead of real advice.', hint: "p-l-a-t-i-t-u-d-e", level: 'Two-Bee', points: 25 },
-  { boxNumber: 29, word: 'nobiliary', definition: 'relating to the nobility or aristocratic families', sentence: 'The ancient castle museum displayed historic nobiliary scrolls.', hint: "Ends in '-ary': n-o-b-i-l-i-a-r-y", level: 'Champion', points: 30 },
-  { boxNumber: 30, word: 'commerce', definition: 'the buying and selling of goods, especially on a large scale', sentence: 'Maritime ports have always been centers of world commerce.', hint: "Double 'm': c-o-m-m-e-r-c-e", level: 'Two-Bee', points: 20 }
+  // Boxes 16 - 30: Meeting 3 Words (French loanwords, roots phil- & -phobia, Two-Bee patterns)
+  { boxNumber: 16, word: 'soirée', definition: 'a fun and fancy evening party with snacks, games, or music', sentence: 'The school orchestra hosted a joyful musical soirée for parents.', hint: "French loanword: keeps the accent 'é' (s-o-i-r-é-e)", level: 'Two-Bee', points: 25 },
+  { boxNumber: 17, word: 'philharmonic', definition: 'devoted to loving music; a large symphony orchestra', sentence: 'We listened to classical instruments at the youth philharmonic concert.', hint: "Greek root 'phil-' (love of): p-h-i-l-h-a-r-m-o-n-i-c", level: 'Two-Bee', points: 25 },
+  { boxNumber: 18, word: 'brontophobia', definition: 'an intense fear of loud thunder and flashing lightning during a storm', sentence: 'During thunderstorms, our scared puppy hides because of brontophobia.', hint: "Greek roots 'bronto' (thunder) + '-phobia' (fear)", level: 'Two-Bee', points: 25 },
+  { boxNumber: 19, word: 'duvet', definition: 'a soft, fluffy bed blanket stuffed with feathers or warm cotton', sentence: 'She pulled the warm fluffy duvet up to her chin on a snowy evening.', hint: "French loanword: silent final 't': d-u-v-e-t", level: 'Two-Bee', points: 20 },
+  { boxNumber: 20, word: 'spectacles', definition: 'another classic word for eyeglasses that help people see clearly', sentence: 'Grandma slipped on her spectacles to read us a bedtime story.', hint: "Latin root 'spec' (look): s-p-e-c-t-a-c-l-e-s", level: 'Medium', points: 15 },
+  { boxNumber: 21, word: 'innovator', definition: 'a creative person who invents clever new tools, games, or ideas', sentence: 'The young innovator designed a backpack with built-in solar chargers.', hint: "Double 'n', ends in '-or': i-n-n-o-v-a-t-o-r", level: 'Two-Bee', points: 20 },
+  { boxNumber: 22, word: 'personnel', definition: 'the group of people or staff who work together at an organization', sentence: 'The library personnel organized a fun summer reading challenge.', hint: "Double 'n', single 'l': p-e-r-s-o-n-n-e-l (not personal!)", level: 'Two-Bee', points: 20 },
+  { boxNumber: 23, word: 'rotisserie', definition: 'a rotating oven spit that slowly turns food as it cooks evenly', sentence: 'The aroma of chicken turning on the golden rotisserie was delicious.', hint: "French loanword: double 's': r-o-t-i-s-s-e-r-i-e", level: 'Two-Bee', points: 25 },
+  { boxNumber: 24, word: 'perseverance', definition: 'never giving up and continuing to try hard even when things are difficult', sentence: 'With daily practice and perseverance, she spelled every word right.', hint: "Ends in '-ance': p-e-r-s-e-v-e-r-a-n-c-e", level: 'Two-Bee', points: 25 },
+  { boxNumber: 25, word: 'buoyancy', definition: 'the natural power of water to keep toys, boats, and swimmers floating', sentence: 'The rubber duck floated with ease thanks to natural buoyancy.', hint: "Starts with 'b-u-o-y': b-u-o-y-a-n-c-y", level: 'Two-Bee', points: 20 },
+  { boxNumber: 26, word: 'fluoride', definition: 'a healthy mineral added to toothpaste to keep children’s teeth strong', sentence: 'Brushing twice a day with fluoride toothpaste keeps cavities away.', hint: "'u' before 'o': f-l-u-o-r-i-d-e (think fluorine, not flour!)", level: 'Medium', points: 20 },
+  { boxNumber: 27, word: 'hallowed', definition: 'greatly respected, honored, or celebrated through history', sentence: 'Framed pictures of spelling champions hung in the hallowed hall.', hint: "Double 'l': h-a-l-l-o-w-e-d", level: 'Medium', points: 15 },
+  { boxNumber: 28, word: 'seismologist', definition: 'an earth scientist who studies ground movements and earthquakes', sentence: 'The seismologist showed students how underground tremors are measured.', hint: "Begins with 's-e-i-s': s-e-i-s-m-o-l-o-g-i-s-t", level: 'Champion', points: 30 },
+  { boxNumber: 29, word: 'fondant', definition: 'a smooth sweet sugar icing rolled flat to decorate birthday cakes', sentence: 'The baker smoothed bright blue fondant over the celebration cake.', hint: "French origin: f-o-n-d-a-n-t", level: 'Medium', points: 15 },
+  { boxNumber: 30, word: 'commerce', definition: 'the buying, selling, and trading of goods between stores and towns', sentence: 'The bustling downtown farmers market was full of cheerful commerce.', hint: "Double 'm': c-o-m-m-e-r-c-e", level: 'Medium', points: 15 }
 ];
 
 // =============================================================================

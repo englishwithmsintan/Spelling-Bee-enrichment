@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Trophy, 
   Volume2, 
@@ -61,10 +61,17 @@ export default function MockSpellingBeeStage({ onAwardTeamScore, genAlphaMode, a
     return true;
   });
 
-  // ==========================================
-  // STAGE SIMULATOR STATE (Slide 10)
-  // ==========================================
-  const [stageMeeting, setStageMeeting] = useState<'meeting-2' | 'meeting-3' | 'all'>('meeting-2');
+  // Stage simulator filter: 'meeting-2' | 'meeting-3' | 'all'
+  const [stageMeeting, setStageMeeting] = useState<'meeting-2' | 'meeting-3' | 'all'>(
+    activeMeeting === 'meeting-3' ? 'meeting-3' : 'meeting-2'
+  );
+
+  useEffect(() => {
+    if (activeMeeting === 'meeting-2' || activeMeeting === 'meeting-3') {
+      setBoxFilter(activeMeeting);
+      setStageMeeting(activeMeeting);
+    }
+  }, [activeMeeting]);
   const [stageIndex, setStageIndex] = useState(0);
   const [stageStrikes, setStageStrikes] = useState(0);
   const [stageInput, setStageInput] = useState('');
